@@ -7,8 +7,10 @@ const authRouter = require("./routes/auth/auth-route");
 //create a db connection -> u can also
 //create a separate file for this and import it here
 
+require("dotenv").config();
+
 mongoose
-  .connect("mongodb+srv://santoshk6r:kumar123@merncluster.i3ttu4d.mongodb.net/")
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("Connection Established"))
   .catch((error) => console.log(error));
 
