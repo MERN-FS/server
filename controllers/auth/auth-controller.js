@@ -64,15 +64,21 @@ const loginUser = async (req, res) => {
       { expiresIn: "60m" }
     );
 
-    res.cookie("token", token, { httpOnly: true, secure: false }).json({
-      success: true,
-      message: "Logged in Successfully",
-      user: {
-        email: checkUser.email,
-        role: checkUser.role,
-        id: checkUser._id,
-      },
-    });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
+      .json({
+        success: true,
+        message: "Logged in Successfully",
+        user: {
+          email: checkUser.email,
+          role: checkUser.role,
+          id: checkUser._id,
+        },
+      });
   } catch (e) {
     console.log(e);
     res.status(500).json({
@@ -84,10 +90,12 @@ const loginUser = async (req, res) => {
 //logout
 
 const logoutUser = (req, res) => {
-  res.clearCookie("token").json({
-    success: true,
-    message: "Logged out Successfully",
-  });
+  res
+    .clearCookie("token", { httpOnly: true, secure: true, sameSite: "none" })
+    .json({
+      success: true,
+      message: "Logged out Successfully",
+    });
 };
 
 //auth middleware
